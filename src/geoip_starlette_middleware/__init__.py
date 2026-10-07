@@ -51,10 +51,10 @@ class GeoIPMiddleware:
             return True
         if self.blocked_addresses and address in self.blocked_addresses:
             return False
-        if self.allowed_countries and self.get_address_country(address) in self.allowed_countries:
-            return True
-        if self.blocked_countries and self.get_address_country(address) in self.blocked_countries:
-            return False
+        if self.allowed_countries:
+            return self.get_address_country(address) in self.allowed_countries
+        if self.blocked_countries:
+            return self.get_address_country(address) not in self.blocked_countries
         return True
 
     async def __call__(
